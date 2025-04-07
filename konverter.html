@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Text-Zahlen-Konverter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #333;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    .output {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+      word-break: break-word;
+    }
+    label {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Text-Zahlen-Konverter</h1>
+
+  <input type="text" id="inputText" placeholder="Gib z. B. anjste24774 ein" />
+  <button onclick="convert()">Umwandeln</button>
+
+  <div class="output" id="outputBox" style="display:none;">
+    <p><label>Original:</label> <span id="originalText"></span></p>
+    <p><label>Buchstaben → Zahlen:</label> <span id="letterToNumbers"></span></p>
+    <p><label>Zahlen → Buchstaben:</label> <span id="numbersToLetters"></span></p>
+    <p><label>Gesamt:</label> <span id="fullOutput"></span></p>
+  </div>
+
+  <script>
+    function convert() {
+      const text = document.getElementById("inputText").value.toLowerCase();
+      const letterToNum = c => c.charCodeAt(0) - 96;
+      const numToLetter = n => String.fromCharCode(n + 96);
+
+      let lettersPart = "", numbersPart = "";
+
+      for (let char of text) {
+        if (/[a-z]/.test(char)) lettersPart += char;
+        if (/[0-9]/.test(char)) numbersPart += char;
+      }
+
+      let letterNums = [...lettersPart].map(c => letterToNum(c));
+      let numberLetters = [...numbersPart].map(d => {
+        let n = parseInt(d);
+        return (n >= 1 && n <= 26) ? numToLetter(n) : "?";
+      });
+
+      document.getElementById("originalText").textContent = text;
+      document.getElementById("letterToNumbers").textContent = letterNums.join(" ");
+      document.getElementById("numbersToLetters").textContent = numberLetters.join(" ");
+      document.getElementById("fullOutput").textContent = `${letterNums.join(" ")} ${numberLetters.join(" ")}`;
+      document.getElementById("outputBox").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
+
